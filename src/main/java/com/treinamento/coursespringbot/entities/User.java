@@ -2,9 +2,20 @@ package com.treinamento.coursespringbot.entities;
 
 import java.io.Serializable;
 
+//dar prioridade a especificação
+import javax.persistence.Entity;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class User implements Serializable{
-	//Quando o objeto e transformado em cadeias de bytes
+	//Quando o objeto e transformado em cadeia de bytes
 	private static final long serialVersionUID = 1L;
+	@Id
+	//definição de estrategia de auto_increment
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;
