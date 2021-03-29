@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.treinamento.coursespringbot.entities.Order;
 import com.treinamento.coursespringbot.entities.User;
+import com.treinamento.coursespringbot.entities.enums.OrderStatus;
 import com.treinamento.coursespringbot.repositories.OrderRepository;
 import com.treinamento.coursespringbot.repositories.UserRepository;
 
@@ -29,9 +30,12 @@ public class TestConfig implements CommandLineRunner {
 		User u2 = new User(null, "Matheus Lima", "MathLima@gmail.com", "2231-58354", "18584");
 
 		// Formato UTC
-		Order o1 = new Order(null, Instant.parse("2020-05-20T19:30:00Z"), u1);
-		Order o2 = new Order(null, Instant.parse("2020-02-12T10:50:20Z"), u2);
-		Order o3 = new Order(null, Instant.parse("2020-12-09T01:12:15Z"), u1);
+		Order o1 = new Order(null, Instant.parse("2020-05-20T19:30:00Z"),
+				OrderStatus.PAID, u1);
+		Order o2 = new Order(null, Instant.parse("2020-02-12T10:50:20Z"),
+				OrderStatus.WAITING_PAYMENT, u2);
+		Order o3 = new Order(null, Instant.parse("2020-12-09T01:12:15Z"), 
+				OrderStatus.SHIPPED, u1);
 
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		orderRepository.saveAll(Arrays.asList(o1, o2, o3));
