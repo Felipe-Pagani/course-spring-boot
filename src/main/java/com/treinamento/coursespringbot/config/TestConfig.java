@@ -39,6 +39,7 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private OrderItemRepository orderItemRepository;
 
+	
 	@Override
 	public void run(String... args) throws Exception {
 		User u1 = new User(null, "Luiz souza", "LuizSouza@gmail.com", "2331-58396", "12345");
