@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.treinamento.coursespringbot.entities.enums.OrderStatus;
 
@@ -45,7 +47,6 @@ public class Order implements Serializable {
 	//mapendando um para um com o mesmo id.
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Payment payment;
-	
 	
 	public Order() {
 		
@@ -103,6 +104,16 @@ public class Order implements Serializable {
 
 	public Set<OrderItem> getItems(){
 		return items;
+	}
+	
+	public Double getTotal() {
+		double sum = 0.0;
+		for(OrderItem x : items) {
+			sum += x.getSubTotal();
+		}
+		return sum;
+		
+		
 	}
 
 	@Override
