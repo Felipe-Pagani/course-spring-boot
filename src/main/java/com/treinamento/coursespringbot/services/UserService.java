@@ -13,54 +13,59 @@ import com.treinamento.coursespringbot.exceptions.DataBaseException;
 import com.treinamento.coursespringbot.exceptions.ResourceNotFoundException;
 import com.treinamento.coursespringbot.repositories.UserRepository;
 
-
 //Classe de service
 @Service
 public class UserService {
-	
-	//ele faz uma injeção de dependência de forma transparente
+
+	// ele faz uma injeção de dependência de forma transparente
 	@Autowired
 	private UserRepository repository;
-	
-	public List<User> findAll(){
+
+	public List<User> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public User findById(Long id) {
-		//retorn o obj do tipo User.
+		// retorn o obj do tipo User.
 		Optional<User> obj = repository.findById(id);
-		//return obj.get();
-		//Depois do tratamento de erro
+		// return obj.get();
+		// Depois do tratamento de erro
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
-		
+
 	}
-	
+
 	public User insert(User obj) {
 		return repository.save(obj);
 	}
-	
+
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-		}catch(EmptyResultDataAccessException	e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException(id);
-		}catch(DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DataBaseException(e.getMessage());
-		}		
-		
+		}
+
 	}
+
 	public User update(Long id, User obj) {
-		User entity = repository.getOne(id);
-		updateData(entity, obj);
-		return repository.save(entity);
+		try {
+			User entity = repository.getOne(id);
+			updateData(entity, obj);
+			return repository.save(entity);
+		}catch(RuntimeException e) {
+			e.printStackTrace();
+			throw new ResourceNotFoundException(id);
+		}
 	}
-	
+
 	private void updateData(User entity, User obj) {
 		entity.setName(obj.getName());
 		entity.setEmail(obj.getEmail());
 		entity.setPhone(obj.getPhone());
 		entity.setPassword(obj.getPassword());
-		
+
 	}
 
 }
