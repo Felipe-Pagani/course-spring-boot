@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.treinamento.coursespringbot.entities.User;
+import com.treinamento.coursespringbot.exceptions.ResourceNotFoundException;
 import com.treinamento.coursespringbot.repositories.UserRepository;
 
 
@@ -25,7 +26,10 @@ public class UserService {
 	public User findById(Long id) {
 		//retorn o obj do tipo User.
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		//return obj.get();
+		//Depois do tratamento de erro
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+		
 	}
 	
 	public User insert(User obj) {
